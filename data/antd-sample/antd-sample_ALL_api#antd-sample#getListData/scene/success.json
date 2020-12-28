@@ -30,6 +30,10 @@
     ]
   },
   "interfaceUniqId": "debf0525-6188-483d-8ff8-ac62b5f6da8e",
-  "contextConfig": {},
+  "contextConfig": {
+    "responseDelay": 0,
+    "responseStatus": 200,
+    "responseHeaders": {}
+  },
   "uniqId": "5e573d2a-385f-4540-a0d2-27f6de8c95f9"
 }

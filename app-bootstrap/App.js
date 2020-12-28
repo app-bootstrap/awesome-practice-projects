@@ -4,7 +4,7 @@ import {
   Button,
   TabBar,
   NavBar,
-  Icon
+  Icon,
 } from 'antd-mobile';
 import classnames from 'classnames';
 import 'antd-mobile/dist/antd-mobile.css';

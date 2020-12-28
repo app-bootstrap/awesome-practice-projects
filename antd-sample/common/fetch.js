@@ -1,7 +1,5 @@
 'use strict';
 
-import 'whatwg-fetch';
-
 const verbs = {
   GET (url, params) {
     return fetch(params ? `${url}?${params}` : url, {

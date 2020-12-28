@@ -1,15 +1,15 @@
 'use strict';
 
-import 'intl';
+// import 'intl';
 import React from 'react';
 import ReactDom from 'react-dom';
 
-import 'antd/dist/antd.css';
+// import 'antd/dist/antd.css';
 
 import './app.less';
 
 import fetch from './common/fetch';
-import Login from './login.jsx';
+// import Login from './login.jsx';
 
 import {
   Layout,
@@ -19,6 +19,7 @@ import {
   notification,
   Spin,
 } from 'antd';
+import TestBot from './testbot.jsx';
 
 const columns = [{
   title: 'Name',
@@ -88,9 +89,9 @@ class App extends React.Component {
   }
 
   render () {
-    if (isLogin) {
-      return <Login />;
-    }
+    // if (isLogin) {
+    //   return <Login />;
+    // }
     return (
       <Layout>
         <Header className="header"></Header>
@@ -114,6 +115,7 @@ class App extends React.Component {
           </Spin>
         </Content>
         <Footer/>
+        <TestBot />
       </Layout>
     );
   }

@@ -4,6 +4,10 @@ const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const DataHub = require('macaca-datahub');
 const datahubMiddleware = require('datahub-proxy-middleware');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const babelrc = require('./.babelrc');
+const amw = require('./a-mw');
+// const Aplugin = require('./a-plugin');
 
 const datahubConfig = {
   port: 5678,
@@ -17,7 +21,7 @@ const datahubConfig = {
       hub: 'awesome',
     },
   },
-  showBoard: true,
+  showBoard: false,
 };
 
 const defaultDatahub = new DataHub({
@@ -26,14 +30,14 @@ const defaultDatahub = new DataHub({
 
 const config = {
   entry: {
-    vuex: path.resolve('vuex'),
-    flux: path.resolve('flux'),
-    redux: path.resolve('redux'),
-    'redux-saga': path.resolve('redux-saga'),
-    mobx: path.resolve('mobx'),
-    'vuex-ts': path.resolve('vuex-ts'),
-    'vue-plain': path.resolve('vue-plain'),
-    unstated: path.resolve('unstated'),
+    // vuex: path.resolve('vuex'),
+    // flux: path.resolve('flux'),
+    // redux: path.resolve('redux'),
+    // 'redux-saga': path.resolve('redux-saga'),
+    // mobx: path.resolve('mobx'),
+    // 'vuex-ts': path.resolve('vuex-ts'),
+    // 'vue-plain': path.resolve('vue-plain'),
+    // unstated: path.resolve('unstated'),
     'app-bootstrap': path.resolve('app-bootstrap'),
     'antd-sample': path.resolve('antd-sample', 'app.jsx'),
   },
@@ -48,6 +52,17 @@ const config = {
         test: /\.jsx?/,
         loader: 'babel-loader',
         exclude: /node_modules/
+      }, {
+        test: /\.jsx?/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: babelrc,
+          },
+        ],
+        include: [
+          path.dirname(require.resolve('debugger-board/package.json')),
+        ],
       }, {
         test: /\.vue$/,
         loader: 'vue-loader',
@@ -93,7 +108,11 @@ const config = {
             loader: 'style-loader'
           },
           {
-            loader: 'css-loader'
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              localIdentName: '[name]_[local]_[hash:base64:5]',
+            },
           },
           {
             loader: 'less-loader'
@@ -101,7 +120,7 @@ const config = {
           {
             loader: 'postcss-loader'
           }
-        ]
+        ],
       }, {
         test: /\.css$/,
         use: [
@@ -121,12 +140,22 @@ const config = {
       'vue$': 'vue/dist/vue.esm.js'
     }
   },
+  externals: {
+    react: 'React',
+    'react-dom': 'ReactDOM',
+    'lodash': '_',
+    antd: 'antd',
+  },
   plugins: [
-    new VueLoaderPlugin()
+    new VueLoaderPlugin(),
+    // new BundleAnalyzerPlugin(),
+    // new Aplugin(),
   ],
   devServer: {
+    host: '0.0.0.0',
     before: app => {
       datahubMiddleware(app)(datahubConfig);
+      amw(app);
     },
     after: () => {
       defaultDatahub.startServer(datahubConfig)
